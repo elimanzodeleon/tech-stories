@@ -5,10 +5,15 @@
   font-family: 'Courier New', Helvetica, sans-serif;
 }
 
+body {
+  background: #3d3d3d;
+}
+
 .container {
+  max-width: 900px;
   min-height: 100vh; /* min height will be 100% of veiwport just in case some searches only return small num of stories*/
+  margin: 0 auto;
   padding: 20px;
-  background: #3d3d3d; /* fallback for old browsers */
   color: #f0f0f0;
 }
 
@@ -67,17 +72,26 @@
   padding: 10px;
 }
 
+.button-reset {
+  margin-top: 10px;
+}
+
+.button-search {
+  border: none;
+  border-bottom: 1px solid #fff;
+}
+
 .search-form {
   padding: 10px 0 20px 0;
   display: flex;
-  /* align-items: baseline; */
 }
 
 .input {
   border: none;
   border-bottom: 1px solid #f0f0f0;
   background-color: transparent;
-  color: #f0f0f0;
+  color: crimson;
+  width: 200px;
   font-size: 24px;
 }
 

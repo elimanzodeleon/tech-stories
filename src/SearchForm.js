@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from './Input';
-import { ReactComponent as Check } from './check.svg';
+import { ReactComponent as Search } from './search.svg';
 
 const SearchForm = ({
   value,
@@ -23,7 +23,7 @@ const SearchForm = ({
         disabled={!searchTerm}
         className={`button ${className}`}
       >
-        <Check height='18px' width='18px' />
+        <Search height='18px' width='18px' />
       </button>
     </form>
   );

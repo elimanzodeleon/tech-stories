@@ -6,10 +6,12 @@ const Item = ({ item, removeItem }) => {
   const { title, url, author, num_comments, points } = item;
   return (
     <div className='item'>
-      <span style={{ width: '40%' }}>
-        <a href={url}>{title}</a>
+      <span style={{ width: '45%' }}>
+        <a href={url} target='_blank'>
+          {title}
+        </a>
       </span>
-      <span style={{ width: '20%' }}>{author}</span>
+      <span style={{ width: '15%' }}>{author}</span>
       <span style={{ width: '10%' }}>
         <Like width='18px' height='18px' className='like' /> {points}
       </span>

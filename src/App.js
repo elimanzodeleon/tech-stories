@@ -176,15 +176,27 @@ function App() {
         handleInputChange={handleInputChange}
         handleSearchSubmit={handleSearchSubmit}
         searchTerm={searchTerm}
-        className='button-large'
+        className='button-large button-search'
       />
 
       {/* render list */}
       {state.isError && <p>Something went wrong...</p>}
       {state.isLoading ? (
         <p>loading...</p>
+      ) : state.data.length === 0 ? (
+        <div>
+          <p>Whoops... looks like you removed all of the stories.</p>
+          <button
+            className='button button_large button-reset'
+            onClick={handleFetchStories}
+          >
+            reset
+          </button>
+        </div>
       ) : (
-        <List list={state.data} removeItem={removeItem} />
+        <div>
+          <List list={state.data} removeItem={removeItem} />
+        </div>
       )}
     </div>
   );

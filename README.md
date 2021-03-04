@@ -68,3 +68,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## TODO
+
+- prettify app
+- move sort state to main app component so that sort state remains the same amongst different searches
+- allow users to like stories which will store liked stories in local storage
+- allow users to view their liked stories
