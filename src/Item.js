@@ -1,6 +1,6 @@
 import React from 'react';
-import { ReactComponent as Remove } from './remove.svg';
-import { ReactComponent as Like } from './like.svg';
+import { ReactComponent as Remove } from './images/remove.svg';
+import { ReactComponent as Like } from './images/like.svg';
 
 const Item = ({ item, removeItem }) => {
   const { title, url, author, num_comments, points } = item;

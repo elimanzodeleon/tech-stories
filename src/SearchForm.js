@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from './Input';
-import { ReactComponent as Search } from './search.svg';
+import { ReactComponent as Search } from './images/search.svg';
 
 const SearchForm = ({
   value,

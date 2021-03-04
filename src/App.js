@@ -112,17 +112,22 @@ const useSemiPersistentState = (key) => {
   return [value, setValue];
 };
 
+// fn to get last 5 most recent urls searched
+const getLast5Urls = (urls) => urls.slice(-5);
+
 // MAIN COMPONENT
 function App() {
   // give custom hook a key so that if this custom hook is used elsewhere
   // it wont overwrite this value in localstorage
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search');
-  const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
+  const [urls, setUrls] = useState([`${API_ENDPOINT}${searchTerm}`]); // use to keep track of search history
   const [state, dispatch] = useReducer(storiesReducer, initialState);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    setUrl(`${API_ENDPOINT}${searchTerm}`); // new api request using searchTerm
+
+    // append this search to urls history
+    setUrls([...urls, `${API_ENDPOINT}${searchTerm}`]);
     setSearchTerm(''); // reset searchTerm
   };
 
@@ -144,8 +149,10 @@ function App() {
     // using server side search
     // axios wraps response into data object so no need to use res.json()
     try {
-      const result = await axios.get(url);
-
+      // use most recent entry in urls (history) to make req to endpoint
+      // since this fn is only called when a new url is added or user resets the list, we will always get most recent search query
+      const lastUrl = urls[urls.length - 1];
+      const result = await axios.get(lastUrl);
       // remove stories with no title (these stories were probably deleted)
       let list = result.data.hits.filter((item) => item.title != null);
 
@@ -161,12 +168,15 @@ function App() {
     } catch (err) {
       dispatch({ type: 'FETCH_STORIES_ERROR' });
     }
-  }, [url]);
+  }, [urls]);
 
   // fetch data on intitial page render
   useEffect(() => {
     handleFetchStories();
   }, [handleFetchStories]);
+
+  // grab last 5 search urls so we could render them
+  const Last5Urls = getLast5Urls(urls);
 
   return (
     <div className='container'>
@@ -178,6 +188,10 @@ function App() {
         searchTerm={searchTerm}
         className='button-large button-search'
       />
+      {/* render 5 btns for last 5 urls that were searched */}
+      {/* {Last5Urls.map((url) => (
+        <button>{url}</button>
+      ))} */}
 
       {/* render list */}
       {state.isError && <p>Something went wrong...</p>}
@@ -185,7 +199,7 @@ function App() {
         <p>loading...</p>
       ) : state.data.length === 0 ? (
         <div>
-          <p>Whoops... looks like you removed all of the stories.</p>
+          <p>Whoops...nothing to see here.</p>
           <button
             className='button button_large button-reset'
             onClick={handleFetchStories}

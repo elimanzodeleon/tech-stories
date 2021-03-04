@@ -1,8 +1,8 @@
 import React, { useReducer, useState } from 'react';
 import { sortBy } from 'lodash'; // library that includes sorting function
 import Item from './Item';
-import { ReactComponent as Up } from './up.svg';
-import { ReactComponent as Down } from './down.svg';
+import { ReactComponent as Up } from './images/up.svg';
+import { ReactComponent as Down } from './images/down.svg';
 
 const SORTS = {
   NONE: (list) => list,
