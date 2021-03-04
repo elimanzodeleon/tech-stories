@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Helvetica, sans-serif;
+}
+
+.container {
+  min-height: 100vh; /* min height will be 100% of veiwport just in case some searches only return small num of stories*/
+  padding: 20px;
+  background: #3d3d3d; /* fallback for old browsers */
+  color: #f0f0f0;
+}
+
+.headline-primary {
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.list-control {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+}
+
+/* target span that are imediate children of .item */
+.item > span {
+  padding: 0 5px;
+  white-space: nowrap; /* prevents span from wrapping to end when width exhasted */
+  overflow: hidden; /* hides text that overflows since there is no wrapping */
+  text-overflow: ellipsis; /* appends ... to end of span when width exhasted */
+}
+
+/* target a tags that are immediate children of span which is an immediate child of .item */
+.item > span > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.button {
+  background: transparent;
+  border: 1px solid #f0f0f0;
+  padding: 5px;
+  cursor: pointer;
+  color: inherit;
+  transition: all 0.2s ease-in;
+  outline: none;
+}
+
+.button:hover {
+  background: #fff;
+  color: #000;
+}
+
+.button_small {
+  padding: 5px;
+}
+
+.button_large {
+  padding: 10px;
+}
+
+.search-form {
+  padding: 10px 0 20px 0;
+  display: flex;
+  /* align-items: baseline; */
+}
+
+.input {
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: transparent;
+  color: #f0f0f0;
+  font-size: 24px;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.button:hover > svg {
+  color: #fff; /* changes color of text */
+  fill: #000; /* changes color of the background */
+}
+
+svg {
+  fill: #fff; /* default color of svg should be white since dark background */
+}
+
+/* give like the only color of the page */
+.like {
+  fill: crimson;
+}
