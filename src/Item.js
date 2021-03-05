@@ -6,7 +6,7 @@ const Item = ({ item, removeItem }) => {
   const { title, url, author, num_comments, points } = item;
   return (
     <div className='item'>
-      <span style={{ width: '45%' }}>
+      <span title={title} style={{ width: '45%' }}>
         <a href={url} target='_blank' rel='noreferrer'>
           {title}
         </a>

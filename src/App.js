@@ -33,7 +33,7 @@ const list = [
   },
 ];
 
-const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
+const API_SEARCH_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 // async simulation of fetching data
 const getAsyncStories = () => {
@@ -93,9 +93,10 @@ const storiesReducer = (state, action) => {
 
 // initial state for url reducer
 const urlsInitialState = {
-  urls: [API_ENDPOINT],
+  urls: [API_SEARCH_ENDPOINT],
   currUrlIdx: 0,
   isMostRecentUrl: true,
+  currPage: 1,
 };
 
 // reducer that handles url history state
@@ -170,7 +171,7 @@ function App() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     const addAtEnd = urlsState.isMostRecentUrl;
-    const currUrlReq = `${API_ENDPOINT}${searchTerm}`;
+    const currUrlReq = `${API_SEARCH_ENDPOINT}${searchTerm}`;
 
     // user created a new search at end of history
     if (addAtEnd) {
@@ -188,7 +189,7 @@ function App() {
         payload: { urls: newPrevUrls, url: currUrlReq },
       });
     }
-    setSearchTerm(''); // reset searchTerm
+    // setSearchTerm(''); // reset searchTerm
   };
 
   // update searchTerm state as user enters input
@@ -205,11 +206,21 @@ function App() {
 
   // get prev url from history
   const handlePrevClick = () => {
+    const prevSearchTerm = urlsState.urls[urlsState.currUrlIdx - 1].replace(
+      API_SEARCH_ENDPOINT,
+      ''
+    );
+    setSearchTerm(prevSearchTerm);
     urlsDispatch({ type: 'MOVE_TO_PREV' });
   };
 
   // get next url from history
   const handleNextClick = () => {
+    const nextSearchTerm = urlsState.urls[urlsState.currUrlIdx + 1].replace(
+      API_SEARCH_ENDPOINT,
+      ''
+    );
+    setSearchTerm(nextSearchTerm);
     const willBeMostRecent =
       urlsState.currUrlIdx + 1 === urlsState.urls.length - 1;
     urlsDispatch({ type: 'MOVE_TO_NEXT', payload: willBeMostRecent });
@@ -246,6 +257,15 @@ function App() {
   useEffect(() => {
     handleFetchStories();
   }, [handleFetchStories]);
+
+  // if there is a search token in localstorage, add it to url so we could call endpoint.
+  // will only run on initial render.
+  useEffect(() => {
+    if (searchTerm) {
+      const localStorageUrl = `${API_SEARCH_ENDPOINT}${searchTerm}`;
+      urlsDispatch({ type: 'ADD_URL_AT_END', payload: localStorageUrl });
+    }
+  }, []);
 
   return (
     <div className='container'>
