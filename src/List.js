@@ -53,7 +53,7 @@ const List = ({ list, removeItem }) => {
             </span>
           </button>
         </span>
-        <span style={{ width: '15%' }}>
+        <span style={{ width: '20%' }}>
           <button
             className='button button-small'
             onClick={() => handleSort('AUTHOR')}
@@ -69,7 +69,7 @@ const List = ({ list, removeItem }) => {
             </span>
           </button>
         </span>
-        <span style={{ width: '10%' }}>
+        <span style={{ width: '15%' }}>
           <button
             className='button button-small'
             onClick={() => handleSort('LIKES')}

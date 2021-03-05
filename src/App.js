@@ -44,6 +44,13 @@ const getAsyncStories = () => {
   );
 };
 
+// initial state for stories reducer
+const storiesInitialState = {
+  data: [],
+  isLoading: false,
+  isError: false,
+};
+
 // reducer that handles stories state
 const storiesReducer = (state, action) => {
   switch (action.type) {
@@ -84,11 +91,47 @@ const storiesReducer = (state, action) => {
   }
 };
 
-// initial state for reducer
-const initialState = {
-  data: [],
-  isLoading: false,
-  isError: false,
+// initial state for url reducer
+const urlsInitialState = {
+  urls: [API_ENDPOINT],
+  currUrlIdx: 0,
+  isMostRecentUrl: true,
+};
+
+// reducer that handles url history state
+const urlsReducer = (state, action) => {
+  switch (action.type) {
+    // add new url at end of history
+    case 'ADD_URL_AT_END':
+      return {
+        ...state,
+        urls: [...state.urls, action.payload],
+        currUrlIdx: state.urls.length, // no need to subtract one since state.urls currently does not included the most recent url that was added
+      };
+    // adding url in middle of history but it will become the new end
+    case 'ADD_URL_NOT_AT_END':
+      return {
+        ...state,
+        urls: [...action.payload.urls, action.payload.url],
+        currUrlIdx: state.currUrlIdx + 1,
+        isMostRecentUrl: true, // since we created a new search
+      };
+    case 'MOVE_TO_PREV':
+      return {
+        ...state,
+        currUrlIdx: state.currUrlIdx - 1,
+        isMostRecentUrl: false,
+      };
+    case 'MOVE_TO_NEXT':
+      return {
+        ...state,
+        currUrlIdx: state.currUrlIdx + 1,
+        isMostRecentUrl: action.payload,
+      };
+    default:
+      console.log('not handling type in urlsReducer');
+      throw new Error('not handling type in urlsReducer');
+  }
 };
 
 // custom hook that allows use to use localstorage for maintaining state
@@ -101,7 +144,7 @@ const useSemiPersistentState = (key) => {
   // every time our search term updates, we will update our local storage.
   // now, whenever and wherever searchTerm is changed, so will our localstorage
   useEffect(() => {
-    // this side effect will only run on each re-render
+    // this side effect will only run on each re-render and NOT on initial render
     if (!isMounted.current) {
       isMounted.current = true;
     } else {
@@ -112,25 +155,43 @@ const useSemiPersistentState = (key) => {
   return [value, setValue];
 };
 
-// fn to get last 5 most recent urls searched
-const getLast5Urls = (urls) => urls.slice(-5);
-
 // MAIN COMPONENT
 function App() {
-  // give custom hook a key so that if this custom hook is used elsewhere
+  // give custom hook a key (e.g. search) so that if this custom hook is used elsewhere
   // it wont overwrite this value in localstorage
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search');
-  const [urls, setUrls] = useState([`${API_ENDPOINT}${searchTerm}`]); // use to keep track of search history
-  const [state, dispatch] = useReducer(storiesReducer, initialState);
+  const [storiesState, storiesDispatch] = useReducer(
+    storiesReducer,
+    storiesInitialState
+  );
+  const [urlsState, urlsDispatch] = useReducer(urlsReducer, urlsInitialState);
 
+  // handle user submiting the search form
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    const addAtEnd = urlsState.isMostRecentUrl;
+    const currUrlReq = `${API_ENDPOINT}${searchTerm}`;
 
-    // append this search to urls history
-    setUrls([...urls, `${API_ENDPOINT}${searchTerm}`]);
+    // user created a new search at end of history
+    if (addAtEnd) {
+      urlsDispatch({
+        type: 'ADD_URL_AT_END',
+        payload: currUrlReq,
+      });
+    } else {
+      // user created new search after visiting a prev search through history navigator (< >)
+      // get prev urls from the point where user created a new search
+      const newPrevUrls = urlsState.urls.slice(0, urlsState.currUrlIdx + 1);
+      console.log(newPrevUrls);
+      urlsDispatch({
+        type: 'ADD_URL_NOT_AT_END',
+        payload: { urls: newPrevUrls, url: currUrlReq },
+      });
+    }
     setSearchTerm(''); // reset searchTerm
   };
 
+  // update searchTerm state as user enters input
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -139,20 +200,31 @@ function App() {
   // therefore, removeItem will never be recreated, empty dep. list -> []
   // and List component will only rerender when stories.data changes.
   const removeItem = (item) => {
-    dispatch({ type: 'REMOVE_STORY', payload: item.objectID });
+    storiesDispatch({ type: 'REMOVE_STORY', payload: item.objectID });
+  };
+
+  // get prev url from history
+  const handlePrevClick = () => {
+    urlsDispatch({ type: 'MOVE_TO_PREV' });
+  };
+
+  // get next url from history
+  const handleNextClick = () => {
+    const willBeMostRecent =
+      urlsState.currUrlIdx + 1 === urlsState.urls.length - 1;
+    urlsDispatch({ type: 'MOVE_TO_NEXT', payload: willBeMostRecent });
   };
 
   // handleFetchStories will only be recreated whenever url changes.
-  // therefore data will only be fetched on init render and when url changes (on searchTerm change).
+  // therefore data will only be fetched on init render and when url changes (ie when searchForm submitted and input changed).
   const handleFetchStories = useCallback(async () => {
-    dispatch({ type: 'FETCH_STORIES' });
+    storiesDispatch({ type: 'FETCH_STORIES' });
     // using server side search
     // axios wraps response into data object so no need to use res.json()
     try {
-      // use most recent entry in urls (history) to make req to endpoint
-      // since this fn is only called when a new url is added or user resets the list, we will always get most recent search query
-      const lastUrl = urls[urls.length - 1];
-      const result = await axios.get(lastUrl);
+      const urls = urlsState.urls;
+      const currUrlIdx = urlsState.currUrlIdx;
+      const result = await axios.get([urls[currUrlIdx]]);
       // remove stories with no title (these stories were probably deleted)
       let list = result.data.hits.filter((item) => item.title != null);
 
@@ -161,55 +233,50 @@ function App() {
         return { ...item, author: item.author.toLowerCase() };
       });
 
-      dispatch({
+      storiesDispatch({
         type: 'FETCH_STORIES_SUCCESS',
         payload: list,
       });
     } catch (err) {
-      dispatch({ type: 'FETCH_STORIES_ERROR' });
+      storiesDispatch({ type: 'FETCH_STORIES_ERROR' });
     }
-  }, [urls]);
+  }, [urlsState]);
 
   // fetch data on intitial page render
   useEffect(() => {
     handleFetchStories();
   }, [handleFetchStories]);
 
-  // grab last 5 search urls so we could render them
-  const Last5Urls = getLast5Urls(urls);
-
   return (
     <div className='container'>
       <h1 className='headline-primary'>Tech Stories</h1>
       <SearchForm
-        value={searchTerm}
+        urlsState={urlsState}
         handleInputChange={handleInputChange}
         handleSearchSubmit={handleSearchSubmit}
+        handlePrevClick={handlePrevClick}
+        handleNextClick={handleNextClick}
         searchTerm={searchTerm}
         className='button-large button-search'
       />
-      {/* render 5 btns for last 5 urls that were searched */}
-      {/* {Last5Urls.map((url) => (
-        <button>{url}</button>
-      ))} */}
 
       {/* render list */}
-      {state.isError && <p>Something went wrong...</p>}
-      {state.isLoading ? (
+      {storiesState.isError && <p>Something went wrong...</p>}
+      {storiesState.isLoading ? (
         <p>loading...</p>
-      ) : state.data.length === 0 ? (
+      ) : storiesState.data.length === 0 ? (
         <div>
           <p>Whoops...nothing to see here.</p>
           <button
             className='button button_large button-reset'
             onClick={handleFetchStories}
           >
-            reset
+            return
           </button>
         </div>
       ) : (
         <div>
-          <List list={state.data} removeItem={removeItem} />
+          <List list={storiesState.data} removeItem={removeItem} />
         </div>
       )}
     </div>
