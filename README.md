@@ -4,10 +4,8 @@ Read the most popular stories from hacker news. [Check it out!](https://gifted-c
 
 ## TODO
 
-- move sort state to main app component so that sort state remains the same amongst different searches
-- allow users to like stories
-- liked stories will be stored in local storage
-- allow users to view their liked stories
+- create user auth allowing users to signup/login, favorite stories and view favorites
+- add pagination
 - prettify app
 - reformat css. currently using inline styles as well as css files.
 - make web app responsive to different sized devices

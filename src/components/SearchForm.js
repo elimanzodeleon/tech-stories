@@ -1,8 +1,8 @@
 import React from 'react';
 import Input from './Input';
-import { ReactComponent as Search } from './images/search.svg';
-import { ReactComponent as Left } from './images/left.svg';
-import { ReactComponent as Right } from './images/right.svg';
+import { ReactComponent as Search } from '../images/search.svg';
+import { ReactComponent as Left } from '../images/left.svg';
+import { ReactComponent as Right } from '../images/right.svg';
 
 const SearchForm = ({
   handleInputChange,

@@ -4,15 +4,15 @@ import App, { Input, Item, List, SearchForm } from './App';
 
 /* BEGIN EXAMPLE */
 // test suite -> describe
-describe('truthy + falsy', () => {
+describe('truth + false', () => {
   // test cases -> it
-  it('true to be true', () => {
+  it('true to equal true', () => {
     // test assertion -> expect
     expect(true).toBe(true);
   });
 
   // test case
-  it('false to be false', () => {
+  it('false to equal false', () => {
     // test assertion
     expect(false).toBe(false);
   });
