@@ -98,7 +98,7 @@ const Home = () => {
 
       // remove stories with no title (these stories were probably deleted)
       let list = result.data.hits.filter(
-        (item) => (item.title !== null) & (item.title !== '')
+        (item) => item.title !== null && item.title !== ''
       );
       // convert author to lowercase (used for sorting)
       list = list.map((item) => {

@@ -9,6 +9,7 @@ import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Settings from './components/Settings';
 import ForgotPassword from './components/ForgotPassword';
+import PrivateRoute from './components/PrivateRoute';
 
 import { ROUTES } from './utils/constants';
 import './App.css';
@@ -23,8 +24,8 @@ function App() {
             <Route exact path={ROUTES.HOME} component={Home} />
             <Route path={ROUTES.SIGN_UP} component={SignUp} />
             <Route path={ROUTES.LOG_IN} component={LogIn} />
-            <Route path={ROUTES.MY_STORIES} component={MyStories} />
-            <Route path={ROUTES.SETTINGS} component={Settings} />
+            <PrivateRoute path={ROUTES.MY_STORIES} component={MyStories} />
+            <PrivateRoute path={ROUTES.SETTINGS} component={Settings} />
             <Route path={ROUTES.FORGOT_PASSWORD} component={ForgotPassword} />
             <Route path='*' component={Home} />
           </Switch>

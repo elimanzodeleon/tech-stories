@@ -28,7 +28,7 @@ const ForgotPassword = () => {
 
   return (
     <div className='form-container'>
-      <h1>Password reset</h1>
+      <h2>Password reset</h2>
       {alert && <p className='form-alert'>{alert}</p>}
       <form onSubmit={handleSubmit} className='form-body'>
         <input

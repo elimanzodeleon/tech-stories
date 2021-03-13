@@ -37,7 +37,7 @@ const SignUp = () => {
 
   return (
     <div className='form-container'>
-      <h1>Create your account</h1>
+      <h2>Create your account</h2>
       {error && <p className='form-alert'>{error}</p>}
       <form onSubmit={handleSubmit} className='form-body'>
         <input
