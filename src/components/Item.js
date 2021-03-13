@@ -19,14 +19,14 @@ const Item = ({ item, removeItem }) => {
         <span>{points}</span>
       </span>
       <span style={{ width: '15%' }}>{num_comments}</span>
-      <span style={{ width: '5%' }}>
+      {/* <span style={{ width: '5%' }}>
         <button
           onClick={() => removeItem(item)}
           className='util-button button-small button-remove'
         >
           <Remove width='20px' height='18px' />
         </button>
-      </span>
+      </span> */}
     </div>
   );
 };

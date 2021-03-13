@@ -6,10 +6,10 @@
 }
 
 body {
-  background: #2e2e2e;
+  background: #1c1c1c;
 }
 
-.container {
+.app-container {
   max-width: 900px;
   min-height: 100vh; /* min height will be 100% of veiwport just in case some searches only return small num of stories*/
   margin: 0 auto;
@@ -17,10 +17,85 @@ body {
   color: #f0f0f0;
 }
 
-.headline-primary {
-  font-size: 48px;
+/* NAVBAR */
+.navbar-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-link {
+  margin: 0 10px;
+}
+
+/* FORMS */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: 50px auto 0 auto;
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input {
+  margin: 10px 0;
+  background: transparent;
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 24px;
+  padding: 5px;
+  color: #f0f0f0;
+  outline: none;
+}
+
+.form-input:focus {
+  border: 1px solid crimson;
+}
+
+.form-button {
+  color: #f0f0f0;
+  background-color: crimson;
+  font-size: 24px;
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.form-alert {
+  color: crimson;
+  font-size: 24px;
+  margin: 10px 0;
+}
+
+.form-helper-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* ROUTER LINKS */
+.link {
+  text-decoration: none;
+  color: crimson;
+}
+
+.title-link {
+  font-size: 36px;
   font-weight: 300;
   letter-spacing: 2px;
+  color: #f0f0f0;
+}
+
+.title-link:hover {
+  color: crimson;
 }
 
 .list-control {
@@ -47,11 +122,6 @@ body {
 .item > span > a {
   text-decoration: none;
   color: inherit;
-}
-
-.form-container {
-  display: flex;
-  align-items: center;
 }
 
 .button {
