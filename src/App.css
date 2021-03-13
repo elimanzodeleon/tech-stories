@@ -57,6 +57,16 @@ body {
   border: 1px solid crimson;
 }
 
+.search-form-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-form-body {
+  padding: 10px 0 20px 0;
+  display: flex;
+}
+
 .form-button {
   color: #f0f0f0;
   background-color: crimson;
@@ -172,32 +182,6 @@ body {
   margin-top: 10px;
 }
 
-.button-remove:hover {
-  animation: shake 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-  perspective: 1000px;
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
 .button-search {
   border: none;
   border-bottom: 1px solid #fff;
@@ -217,11 +201,6 @@ body {
 /* give like the only color of the page */
 .like {
   fill: crimson;
-}
-
-.search-form {
-  padding: 10px 0 20px 0;
-  display: flex;
 }
 
 .input {

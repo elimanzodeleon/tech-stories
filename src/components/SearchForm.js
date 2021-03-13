@@ -19,8 +19,8 @@ const SearchForm = ({
   // END DUMMY
 
   return (
-    <div className=''>
-      <form onSubmit={handleSearchSubmit} className='search-form'>
+    <div className='search-form-container'>
+      <form onSubmit={handleSearchSubmit} className='search-form-body'>
         <Input
           value={searchTerm}
           handleInputChange={handleInputChange}

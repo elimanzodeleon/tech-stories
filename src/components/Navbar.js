@@ -4,7 +4,7 @@ import { ROUTES } from '../utils/constants';
 import { useAuthContext } from '../contexts/AuthContext';
 
 const Navbar = () => {
-  const currentUser = useAuthContext();
+  const { currentUser } = useAuthContext();
   return (
     <div className='navbar-container'>
       <Link to={ROUTES.HOME} className='link title-link'>
@@ -30,11 +30,11 @@ const NonAuthLinks = () => (
 // navbar links if there is a user
 const AuthLinks = () => (
   <>
-    <Link to={ROUTES.MY_STORIES} className='navbar-link'>
+    <Link to={ROUTES.MY_STORIES} className='link navbar-link'>
       My stories
     </Link>
     {/* replace with settings logo -> place log out in settings*/}
-    <Link to={ROUTES.SETTINGS} className='navbar-link'>
+    <Link to={ROUTES.SETTINGS} className='link navbar-link'>
       Settings
     </Link>
   </>

@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     // user changes only on log in or sign out
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
+      user ? setCurrentUser(user) : setCurrentUser(null);
       setLoading(false);
     });
 
