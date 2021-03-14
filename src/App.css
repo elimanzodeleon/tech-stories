@@ -117,7 +117,7 @@ body {
 .item {
   display: flex;
   align-items: center;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
 }
 
 /* target span that are imediate children of .item */
@@ -135,26 +135,20 @@ body {
 }
 
 .button {
+  font-size: 18px;
   background: transparent;
-  border: 1px solid #f0f0f0;
-  padding: 5px;
   cursor: pointer;
-  color: inherit;
-  transition: all 0.2s ease-in;
+  border: none;
+  color: gray;
   outline: none;
 }
 
 .button:hover {
-  background: #fff;
-  color: #000;
+  color: #5c5c5c;
 }
 
 .button_small {
   padding: 5px;
-}
-
-.button_large {
-  padding: 10px;
 }
 
 .button-hide {
@@ -169,6 +163,11 @@ body {
   outline: none;
 }
 
+/* any svg immediately within a util button should be filled white  */
+.util-button > svg {
+  fill: #f0f0f0;
+}
+
 .util-button:hover > svg {
   fill: crimson;
 }
@@ -178,31 +177,19 @@ body {
   display: block;
 }
 
-.button-reset {
-  margin-top: 10px;
-}
-
 .button-search {
   border: none;
   border-bottom: 1px solid #fff;
 }
 
-.button-like {
+/* .button-like {
   border: none;
   background: transparent;
   padding-right: 5px;
   cursor: pointer;
-}
+} */
 
-.button-like:hover {
-  background: transparent;
-}
-
-/* give like the only color of the page */
-.like {
-  fill: crimson;
-}
-
+/* search from input */
 .input {
   border: none;
   border-bottom: 1px solid #f0f0f0;
@@ -216,11 +203,6 @@ body {
   outline: none;
 }
 
-.button:hover > svg {
-  color: #fff; /* changes color of text */
-  fill: #000; /* changes color of the background */
-}
-
-svg {
-  fill: #fff; /* default color of svg should be white since dark background */
+.sort-icon {
+  fill: crimson; /* default color of svg should be white since dark background */
 }

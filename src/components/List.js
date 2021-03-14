@@ -3,6 +3,8 @@ import { sortBy } from 'lodash'; // library that includes sorting function
 import Item from './Item';
 import { ReactComponent as Up } from '../images/up.svg';
 import { ReactComponent as Down } from '../images/down.svg';
+import { ReactComponent as Left } from '../images/left.svg';
+import { ReactComponent as Right } from '../images/right.svg';
 
 const SORTS = {
   NONE: (list) => list,
@@ -12,7 +14,7 @@ const SORTS = {
   COMMENTS: (list) => sortBy(list, 'num_comments').reverse(),
 };
 
-const List = ({ list, removeItem }) => {
+const List = ({ list, currPage, handlePrevPageClick, handleNextPageClick }) => {
   const [sort, setSort] = useState({
     sortKey: 'NONE',
     revereSort: false,
@@ -31,7 +33,7 @@ const List = ({ list, removeItem }) => {
   // func we will be using for sorting
   const sortFn = SORTS[sort.sortKey];
   // sorted list using function from above
-  // if reverSort then we will reverse whatever si returned from our function
+  // if reverSort then we will reverse whatever is returned from our function
   const sortedList = sort.reverseSort ? sortFn(list).reverse() : sortFn(list);
 
   return (
@@ -46,9 +48,9 @@ const List = ({ list, removeItem }) => {
             <span>
               {sort.sortKey === 'TITLE' &&
                 (sort.reverseSort ? (
-                  <Down width='10px' height='10px' />
+                  <Down width='10px' height='10px' className='sort-icon' />
                 ) : (
-                  <Up width='10px' height='10px' />
+                  <Up width='10px' height='10px' className='sort-icon' />
                 ))}
             </span>
           </button>
@@ -62,9 +64,9 @@ const List = ({ list, removeItem }) => {
             <span>
               {sort.sortKey === 'AUTHOR' &&
                 (sort.reverseSort ? (
-                  <Down width='10px' height='10px' />
+                  <Down width='10px' height='10px' className='sort-icon' />
                 ) : (
-                  <Up width='10px' height='10px' />
+                  <Up width='10px' height='10px' className='sort-icon' />
                 ))}
             </span>
           </button>
@@ -78,9 +80,9 @@ const List = ({ list, removeItem }) => {
             <span>
               {sort.sortKey === 'LIKES' &&
                 (sort.reverseSort ? (
-                  <Down width='10px' height='10px' />
+                  <Down width='10px' height='10px' className='sort-icon' />
                 ) : (
-                  <Up width='10px' height='10px' />
+                  <Up width='10px' height='10px' className='sort-icon' />
                 ))}
             </span>
           </button>
@@ -94,17 +96,31 @@ const List = ({ list, removeItem }) => {
             <span>
               {sort.sortKey === 'COMMENTS' &&
                 (sort.reverseSort ? (
-                  <Down width='10px' height='10px' />
+                  <Down width='10px' height='10px' className='sort-icon' />
                 ) : (
-                  <Up width='10px' height='10px' />
+                  <Up width='10px' height='10px' className='sort-icon' />
                 ))}
             </span>
           </button>
         </span>
       </div>
       {sortedList.map((item) => (
-        <Item key={item.objectID} item={item} removeItem={removeItem} />
+        <Item key={item.objectID} item={item} />
       ))}
+      {/* prev button should only render if our current page is NOT 0 (starting page) */}
+      <div>
+        <button
+          className='util-button'
+          onClick={handlePrevPageClick}
+          disabled={currPage === 0}
+        >
+          <Left width='18px' height='18px' />
+        </button>
+        {/* next button should always be visible */}
+        <button className='util-button' onClick={handleNextPageClick}>
+          <Right width='18px' height='18px' />
+        </button>
+      </div>
     </>
   );
 };

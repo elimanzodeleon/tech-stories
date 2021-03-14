@@ -1,3 +1,4 @@
+// CURRENTLY NOT USING LOCAL STATE
 import { useState, useEffect, useRef } from 'react';
 
 // custom hook that allows use to use localstorage for maintaining state

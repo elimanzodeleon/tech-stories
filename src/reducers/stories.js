@@ -2,7 +2,7 @@
 export const storiesInitialState = {
   data: [],
   page: 0,
-  isLoading: false,
+  isLoading: true,
   isError: false,
 };
 

@@ -1,7 +1,6 @@
 // const main api endpoint used for fetching stories
 export const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
-
-export const API_PAGE = '&hitsPerPage=50';
+export const API_PAGE_NUM = '&page=';
 
 export const ROUTES = {
   HOME: '/',

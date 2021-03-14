@@ -2,10 +2,15 @@
 
 Read the most popular stories from hacker news. [Check it out!](https://gifted-carson-b1e491.netlify.app)
 
+Built with:
+
+- [React](https://reactjs.org)
+- [Firebase](https://firebase.google.com/)
+- [Hacker News API](https://hn.algolia.com/api)
+
 ## TODO
 
-- create user auth allowing users to signup/login, favorite stories and view favorites
-- add pagination
+- implement like functionality for authenticated users
+- move sorting to home component so that sotires control bar does not rerender on each search
 - prettify app
-- reformat css. currently using inline styles as well as css files.
 - make web app responsive to different sized devices

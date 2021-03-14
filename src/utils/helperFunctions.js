@@ -1,4 +1,4 @@
-import { API_ENDPOINT, API_PAGE } from './constants';
+import { API_ENDPOINT, API_PAGE_NUM } from './constants';
 
 export const getSearchTermFromUrl = (url) => {
   // redeuce the url to only include whatever is AFTER the API_ENDPOINT
@@ -10,4 +10,4 @@ export const getSearchTermFromUrl = (url) => {
 };
 
 export const getCompleteUrl = (searchTerm) =>
-  `${API_ENDPOINT}${searchTerm}${API_PAGE}`;
+  `${API_ENDPOINT}${searchTerm}${API_PAGE_NUM}`;

@@ -1,17 +1,15 @@
-import React, { useEffect, useReducer, useCallback } from 'react';
+import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import axios from 'axios';
-import Navbar from './Navbar';
 import List from './List';
 import SearchForm from './SearchForm';
 import { storiesInitialState, storiesReducer } from '../reducers/stories';
 import { urlsInitialState, urlsReducer } from '../reducers/urls';
-import { useSemiPersistentState } from '../hooks/useSemiPersistentState';
 import { getSearchTermFromUrl, getCompleteUrl } from '../utils/helperFunctions';
 
 const Home = () => {
   // give custom hook a key (e.g. search) so that if this custom hook is used elsewhere
   // it wont overwrite this value in localstorage
-  const [searchTerm, setSearchTerm] = useSemiPersistentState('search');
+  const [searchTerm, setSearchTerm] = useState('');
   const [storiesState, storiesDispatch] = useReducer(
     storiesReducer,
     storiesInitialState
@@ -59,17 +57,17 @@ const Home = () => {
   };
 
   // get prev url from history
-  const handlePrevClick = () => {
+  const handlePrevSearchClick = () => {
     // parse searchterm from url that comes before current to get prev search
     const prevSearchTerm = getSearchTermFromUrl(
       urlsState.urls[urlsState.currUrlIdx - 1]
     );
     setSearchTerm(prevSearchTerm);
-    urlsDispatch({ type: 'MOVE_TO_PREV' });
+    urlsDispatch({ type: 'MOVE_TO_PREV_SEARCH' });
   };
 
   // get next url from history
-  const handleNextClick = () => {
+  const handleNextSearchClick = () => {
     // parse searchterm from url
     const nextSearchTerm = getSearchTermFromUrl(
       urlsState.urls[urlsState.currUrlIdx + 1]
@@ -78,13 +76,24 @@ const Home = () => {
     // check if after clicking next we will be at most recent url so we could hide next (>) button
     const willBeMostRecent =
       urlsState.currUrlIdx + 1 === urlsState.urls.length - 1;
-    urlsDispatch({ type: 'MOVE_TO_NEXT', payload: willBeMostRecent });
+    urlsDispatch({ type: 'MOVE_TO_NEXT_SEARCH', payload: willBeMostRecent });
+  };
+
+  // get next page of stories from current search term when user clicks >
+  const handleNextPageClick = () => {
+    urlsDispatch({ type: 'GET_NEXT_PAGE' });
+  };
+
+  // get prev page of stories ONLY if current page is NOT 0
+  const handlePrevPageClick = () => {
+    urlsDispatch({ type: 'GET_PREV_PAGE' });
   };
 
   // handleFetchStories will only be recreated whenever urlState changes.
   // therefore data will only be fetched on init render and when url changes (ie when searchForm submitted and input changed).
   const handleFetchStories = useCallback(async () => {
     storiesDispatch({ type: 'FETCH_STORIES' });
+
     // using server side search
     // axios wraps response into data object so no need to use res.json()
     try {
@@ -92,7 +101,8 @@ const Home = () => {
       const urls = urlsState.urls;
       // get idx location of the current url endpoint
       const currUrlIdx = urlsState.currUrlIdx;
-      const url = urls[currUrlIdx];
+      // append currPage to url, starts at 0 on initial render
+      const url = `${urls[currUrlIdx]}${urlsState.currPage}`;
       // fetch data
       const result = await axios.get(url);
 
@@ -119,23 +129,14 @@ const Home = () => {
     handleFetchStories();
   }, [handleFetchStories]);
 
-  // if there is a search token in localstorage, add it to url so we could call endpoint.
-  // will only run on initial render.
-  useEffect(() => {
-    if (searchTerm) {
-      const localStorageUrl = getCompleteUrl(searchTerm);
-      urlsDispatch({ type: 'ADD_URL_AT_END', payload: localStorageUrl });
-    }
-  }, []);
-
   return (
     <div className='container'>
       <SearchForm
         urlsState={urlsState}
         handleInputChange={handleInputChange}
         handleSearchSubmit={handleSearchSubmit}
-        handlePrevClick={handlePrevClick}
-        handleNextClick={handleNextClick}
+        handlePrevClick={handlePrevSearchClick}
+        handleNextClick={handleNextSearchClick}
         searchTerm={searchTerm}
         className='button-large button-search'
       />
@@ -147,16 +148,15 @@ const Home = () => {
       ) : storiesState.data.length === 0 ? (
         <div>
           <p>Whoops...nothing to see here.</p>
-          <button
-            className='button button_large button-reset'
-            onClick={handleFetchStories}
-          >
-            return
-          </button>
         </div>
       ) : (
         <div>
-          <List list={storiesState.data} removeItem={removeItem} />
+          <List
+            list={storiesState.data}
+            currPage={urlsState.currPage}
+            handlePrevPageClick={handlePrevPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
         </div>
       )}
     </div>

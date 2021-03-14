@@ -22,7 +22,7 @@ const Settings = () => {
   };
 
   return (
-    <div>
+    <div className='form-container'>
       {error && <p className='form-alert'>{error}</p>}
       <button onClick={handleLogout} className='form-button'>
         Log out

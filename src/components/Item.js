@@ -5,7 +5,7 @@ import { ReactComponent as Liked } from '../images/liked.svg';
 import { useAuthContext } from '../contexts/AuthContext';
 
 // no longer need reomve item, will only use in users saved stories
-const Item = ({ item, removeItem }) => {
+const Item = ({ item }) => {
   const { title, url, author, num_comments, points } = item;
   const { currentUser } = useAuthContext();
 
