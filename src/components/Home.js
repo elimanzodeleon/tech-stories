@@ -60,9 +60,15 @@ const Home = () => {
   // get prev url from history
   const handlePrevSearchClick = () => {
     // parse searchterm from url that comes before current to get prev search
-    const prevSearchTerm = getSearchTermFromUrl(
-      urlsState.urls[urlsState.currUrlIdx - 1]
-    );
+    // if we are getting the first url, then we just need to set the searchTerm to an empty str
+    let prevSearchTerm = '';
+    if (urlsState.currUrlIdx - 1 !== 0) {
+      // the new url in history is not the start so grab the search term that was entered by the user
+      prevSearchTerm = getSearchTermFromUrl(
+        urlsState.urls[urlsState.currUrlIdx - 1]
+      );
+    }
+
     setSearchTerm(prevSearchTerm);
     urlsDispatch({ type: 'MOVE_TO_PREV_SEARCH' });
   };

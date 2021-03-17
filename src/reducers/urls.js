@@ -2,7 +2,7 @@ import { getCompleteUrl } from '../utils/helperFunctions';
 
 // initial state for url reducer
 export const urlsInitialState = {
-  urls: [getCompleteUrl('')],
+  urls: [getCompleteUrl('', true)],
   currUrlIdx: 0,
   isMostRecentUrl: true,
   currPage: 0,
