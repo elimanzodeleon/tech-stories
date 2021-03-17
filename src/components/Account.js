@@ -3,14 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
 import { ROUTES } from '../utils/constants';
 
-const Settings = () => {
-  const [loading, setLoading] = useState(false);
+const Account = () => {
   const [error, setError] = useState('');
   const history = useHistory();
   const { logout } = useAuthContext();
 
   const handleLogout = async () => {
-    setLoading(true);
     setError('');
     try {
       await logout();
@@ -31,4 +29,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Account;

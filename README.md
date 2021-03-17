@@ -10,7 +10,6 @@ Built with:
 
 ## TODO
 
-- implement like functionality for authenticated users
 - move sorting to home component so that sotires control bar does not rerender on each search
-- prettify app
+- restructure how the users liked stories render on the my stories page
 - make web app responsive to different sized devices

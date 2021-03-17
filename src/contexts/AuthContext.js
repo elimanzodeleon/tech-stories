@@ -26,11 +26,21 @@ const AuthProvider = ({ children }) => {
   };
 
   /* DATABASE */
-  const story = () => {
-    // todo
+  const user = (uid) => {
+    return db.ref(`users/${uid}`);
   };
-  const stories = () => {
-    // todo
+
+  const users = () => {
+    return db.ref('users');
+  };
+
+  const addStoryToUserLikes = (userID, storyID, story) => {
+    const dbStory = { [storyID]: story };
+    db.ref(`users/${userID}/likedStories`).update(dbStory);
+  };
+
+  const removeStoryFromUserLikes = (userID, storyID) => {
+    db.ref(`users/${userID}/likedStories/${storyID}`).remove();
   };
 
   // check for current user on initial render
@@ -47,7 +57,17 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signup, login, logout, resetPassword, currentUser }}
+      value={{
+        signup,
+        login,
+        logout,
+        resetPassword,
+        currentUser,
+        user,
+        users,
+        addStoryToUserLikes,
+        removeStoryFromUserLikes,
+      }}
     >
       {/* only if we have verified if there is or isnt a user should we render the children */}
       {!loading && children}

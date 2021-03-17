@@ -1,7 +1,6 @@
 // initial state for stories reducer
 export const storiesInitialState = {
   data: [],
-  page: 0,
   isLoading: true,
   isError: false,
 };
@@ -34,13 +33,21 @@ export const storiesReducer = (state, action) => {
         ...state,
         data: state.data.filter((item) => item.objectID !== action.payload),
       };
-    case 'GET_MORE_STORIES':
+    case 'TOGGLE_STORY_LIKE':
+      const newData = state.data.map((story) => {
+        if (story.objectID === action.payload) {
+          return {
+            ...story,
+            liked: !story.liked,
+          };
+        }
+        return story;
+      });
       return {
         ...state,
-        page: action.payload,
+        data: newData,
       };
     default:
-      console.log('NOT HANDLING GIVEN TYPE IN REDUCER');
       throw new Error('NOT HANDLING GIVEN TYPE IN REDUCER');
   }
 };

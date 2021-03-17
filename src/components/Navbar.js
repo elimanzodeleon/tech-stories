@@ -5,6 +5,7 @@ import { useAuthContext } from '../contexts/AuthContext';
 
 const Navbar = () => {
   const { currentUser } = useAuthContext();
+
   return (
     <div className='navbar-container'>
       <Link to={ROUTES.HOME} className='link title-link'>
@@ -34,8 +35,8 @@ const AuthLinks = () => (
       My stories
     </Link>
     {/* replace with settings logo -> place log out in settings*/}
-    <Link to={ROUTES.SETTINGS} className='link navbar-link'>
-      Settings
+    <Link to={ROUTES.ACCOUNT} className='link navbar-link'>
+      Account
     </Link>
   </>
 );

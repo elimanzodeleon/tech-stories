@@ -116,6 +116,7 @@ body {
 
 .item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
 }
@@ -170,6 +171,17 @@ body {
 
 .util-button:hover > svg {
   fill: crimson;
+}
+
+.util-button-disable {
+  border: none;
+  background: transparent;
+  padding: 5px;
+  cursor: pointer;
+  outline: none;
+}
+.util-button-disable > svg {
+  fill: #f0f0f0;
 }
 
 .button-history-container {

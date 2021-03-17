@@ -39,7 +39,7 @@ const ForgotPassword = () => {
           onChange={handleChange(setEmail)}
           className='form-input'
         />
-        <button type='submit' className='form-button'>
+        <button type='submit' className='form-button' disabled={loading}>
           Reset password
         </button>
       </form>

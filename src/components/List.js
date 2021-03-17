@@ -110,7 +110,7 @@ const List = ({ list, currPage, handlePrevPageClick, handleNextPageClick }) => {
       {/* prev button should only render if our current page is NOT 0 (starting page) */}
       <div>
         <button
-          className='util-button'
+          className={currPage === 0 ? 'util-button-disable' : 'util-button'}
           onClick={handlePrevPageClick}
           disabled={currPage === 0}
         >

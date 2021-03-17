@@ -1,20 +1,26 @@
-import React, { useState, useEffect, useReducer, useCallback } from 'react';
+import React, {
+  useState,
+  useLayoutEffect,
+  useReducer,
+  useCallback,
+} from 'react';
 import axios from 'axios';
 import List from './List';
 import SearchForm from './SearchForm';
-import { storiesInitialState, storiesReducer } from '../reducers/stories';
 import { urlsInitialState, urlsReducer } from '../reducers/urls';
 import { getSearchTermFromUrl, getCompleteUrl } from '../utils/helperFunctions';
+import { useStoriesContext } from '../contexts/StoriesContext';
+import { useAuthContext } from '../contexts/AuthContext';
 
 const Home = () => {
-  // give custom hook a key (e.g. search) so that if this custom hook is used elsewhere
-  // it wont overwrite this value in localstorage
   const [searchTerm, setSearchTerm] = useState('');
-  const [storiesState, storiesDispatch] = useReducer(
-    storiesReducer,
-    storiesInitialState
-  );
+
   const [urlsState, urlsDispatch] = useReducer(urlsReducer, urlsInitialState);
+
+  // stories context for keeping track of stories fetched from api
+  const { storiesState, storiesDispatch } = useStoriesContext();
+  // for like functionallity
+  const { user, currentUser } = useAuthContext();
 
   // handle user submiting the search form
   const handleSearchSubmit = (e) => {
@@ -49,11 +55,6 @@ const Home = () => {
   // update searchTerm state as user enters input
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
-  };
-
-  // handle removal of a story
-  const removeItem = (item) => {
-    storiesDispatch({ type: 'REMOVE_STORY', payload: item.objectID });
   };
 
   // get prev url from history
@@ -115,17 +116,40 @@ const Home = () => {
         return { ...item, author: item.author.toLowerCase() };
       });
 
+      // TODO - check if the current user has any of the stories saved/liked
+      // const userLikeStories = GET LIKED STORIES ARRAY OF CURRENT USER FROM FIREBASE
+      if (currentUser) {
+        await user(currentUser.uid).on('value', (snapshot) => {
+          // first check if there is a user entry in db before attempting to grab liked stories
+          // this will not run for users who have not liked any stories
+          if (snapshot.exists()) {
+            // get keys of user liked stories
+            const res = Object.keys(snapshot.val().likedStories);
+            // loop through api list adding whether or not story is liked
+            list = list.map((story) => {
+              let liked = false;
+              if (res.includes(story.objectID)) {
+                liked = true;
+              }
+              return { ...story, liked: liked };
+            });
+          }
+        });
+      }
+
       storiesDispatch({
         type: 'FETCH_STORIES_SUCCESS',
         payload: { list: list },
       });
     } catch (err) {
+      console.log(err);
       storiesDispatch({ type: 'FETCH_STORIES_ERROR' });
     }
+    // setLoading(false);
   }, [urlsState]);
 
   // fetch data on intitial page render
-  useEffect(() => {
+  useLayoutEffect(() => {
     handleFetchStories();
   }, [handleFetchStories]);
 
