@@ -10,6 +10,6 @@ Built with:
 
 ## TODO
 
-- refactor sorting ability so that it does not rerender with each search
+- refactor sorting functionality so that it does not rerender with each search
 - restructure how the users liked stories render on the my stories page
 - make web app responsive to different sized devices
