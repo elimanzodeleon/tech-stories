@@ -10,6 +10,6 @@ Built with:
 
 ## TODO
 
-- move sorting to home component so that sotires control bar does not rerender on each search
+- move sorting to home component so that stories control bar does not rerender on each search
 - restructure how the users liked stories render on the my stories page
 - make web app responsive to different sized devices
